@@ -1,0 +1,33 @@
+AV A
+AV B
+AV C
+AV D
+AV E
+AV F
+AV G
+AV H
+AE A B
+AE C B
+AE B D
+AE A E
+AE D C
+AE F A
+AE B F
+AE C G
+AE G H
+AE E G
+AE F G
+KN 1 A
+KN 2 A
+KN 1 F
+DV C
+DE B A
+DE G H
+KN 1 H
+TV B
+TV E
+TV B
+PV
+PE
+SIR A;F 0.8 0.5
+Q
