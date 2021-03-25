@@ -6,6 +6,7 @@ public class Vertex
     public Vertex(String name)
     {
         this.name = name;
+        state = SIRState.S;
     }
 
     public String getName() { return name; }

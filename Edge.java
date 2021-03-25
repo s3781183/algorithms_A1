@@ -12,4 +12,12 @@ public class Edge
     public Vertex getVert1() { return vert1; }
 
     public Vertex getVert2() { return vert2; }
+
+    public String toString()
+    {
+        StringBuffer string = new StringBuffer();
+        string.append(vert1.getName());
+        string.append(vert2.getName());
+        return string.toString();
+    }
 }
