@@ -94,10 +94,10 @@ public class Array
      * @param value Value to search for.
      * @return Index where value is located, otherwise returns -1 (NOT_IN_ARRAY).
      */
-    public int search(Vertex value) {
+    public int search(String value) {
         if (array != null) {
             for (int i = 0; i < array.length; ++i) {
-                if (array[i] == value) {
+                if (array[i].equals(value)) {
                     return i;
                 }
             }
@@ -119,6 +119,10 @@ public class Array
 
         System.out.println("");
     } // end of print()
+
+    public int length(){
+        return array.length;
+    }
 
 
 
