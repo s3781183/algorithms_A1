@@ -20,7 +20,6 @@ public class AdjacencyList extends AbstractGraph
     {
     	 array = new ArrayLinkedList();
     	 edgeList = new EdgeLinkedList();
-
     } // end of AdjacencyList()
 
 
