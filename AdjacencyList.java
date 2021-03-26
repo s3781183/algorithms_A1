@@ -10,15 +10,16 @@ import java.io.PrintWriter;
  */
 public class AdjacencyList extends AbstractGraph
 {
-    LinkedList vertexList = new LinkedList();
-    LinkedList edgeList = new LinkedList();
+    private ArrayLinkedList array;
+    private EdgeLinkedList edgeList;
 
     /**
 	 * Contructs empty graph.
 	 */
     public AdjacencyList()
     {
-    	 // Implement me!
+    	 array = new ArrayLinkedList();
+    	 edgeList = new EdgeLinkedList();
 
     } // end of AdjacencyList()
 
@@ -26,26 +27,31 @@ public class AdjacencyList extends AbstractGraph
     public void addVertex(String vertLabel)
     {
         Vertex vertex = new Vertex(vertLabel);
-        vertexList.addVertex(vertex);
+        VertexLinkedList vertexList = new VertexLinkedList(vertex);
+        array.add(vertexList);
     } // end of addVertex()
 
 
     public void addEdge(String srcLabel, String tarLabel)
     {
-        Vertex vertex1 = vertexList.searchVertex(srcLabel);
-        Vertex vertex2 = vertexList.searchVertex(tarLabel);
+        VertexLinkedList verts1 = array.search(srcLabel);
+        VertexLinkedList verts2 = array.search(tarLabel);
+        Vertex vertex1 = verts1.search(srcLabel);
+        Vertex vertex2 = verts2.search(srcLabel);
 
         if (vertex1 != null && vertex2 != null)
         {
             Edge edge = new Edge(vertex1, vertex2);
-            edgeList.addEdge(edge);
+            verts1.add(vertex2);
+            verts2.add(vertex1);
+            edgeList.add(edge);
         }
     } // end of addEdge()
 
 
     public void toggleVertexState(String vertLabel)
     {
-        Vertex vertex = vertexList.searchVertex(vertLabel);
+        Vertex vertex = array.search(vertLabel).getmHead().getVertex();
 
         if (vertex != null)
         {
@@ -66,43 +72,74 @@ public class AdjacencyList extends AbstractGraph
         StringBuffer name = new StringBuffer();
         name.append(srcLabel);
         name.append(tarLabel);
-        Edge edge = edgeList.searchEdge(name.toString());
+        VertexLinkedList verts1 = array.search(srcLabel);
+        VertexLinkedList verts2 = array.search(tarLabel);
+        Edge edge = edgeList.search(name.toString());
 
         if (edge != null)
         {
-            edgeList.removeEdge(name.toString());
+            verts1.remove(tarLabel);
+            verts2.remove(srcLabel);
+            edgeList.remove(name.toString());
         }
     } // end of deleteEdge()
 
 
     public void deleteVertex(String vertLabel)
     {
-        Vertex vertex = vertexList.searchVertex(vertLabel);
+        Vertex vertex = array.search(vertLabel).getmHead().getVertex();
+        VertexLinkedList verts1 = array.search(vertLabel);
 
         if (vertex != null)
         {
-            edgeList.removeEdge(vertLabel);
+            array.remove(verts1);
+            for (int i = 0; i < array.getLength(); ++i)
+            {
+                array.get(i).remove(vertLabel);
+            }
         }
     } // end of deleteVertex()
 
 
-    public String[] kHopNeighbours(int k, String vertLabel) {
-        // Implement me!
+    public String[] kHopNeighbours(int k, String vertLabel)
+    {
+        String[] neighbours = new String[array.getLength()];
+        neighbours[0] = vertLabel;
+        int index = 1;
 
-        // please update!
-        return null;
+        for (int i = 0; i < k; i++)
+        {
+            for (String neighbour: neighbours)
+            {
+                VertexLinkedList list = array.search(neighbour);
+                for (int j = 0; j < list.getmLength(); ++j)
+                {
+                    for (String neighbourNode: neighbours)
+                    {
+                        Vertex vert = list.get(i).getVertex();
+                        if (!vert.getName().contentEquals(neighbourNode))
+                        {
+                            neighbours[index] = vert.getName();
+                            ++index;
+                        }
+                    }
+                }
+            }
+        }
+
+        return neighbours;
     } // end of kHopNeighbours()
 
 
     public void printVertices(PrintWriter os)
     {
-        os.print(vertexList.vertexesToString());
+        os.print(array.print());
     } // end of printVertices()
 
 
     public void printEdges(PrintWriter os)
     {
-        os.print(edgeList.edgesToString());
+        os.print(edgeList.ToString());
     } // end of printEdges()
 
 } // end of class AdjacencyList
