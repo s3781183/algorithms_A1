@@ -11,14 +11,15 @@ import java.io.PrintWriter;
 public class AdjacencyMatrix extends AbstractGraph
 {
     protected Array vertices;
+    protected int noVertices;
     protected boolean matrix[][];
 	/**
 	 * Contructs empty graph.
 	 */
     public AdjacencyMatrix() {
+        noVertices =0;
+        matrix = new boolean[noVertices][noVertices];
 
-    vertices = null;
-    matrix = null;
     	// Implement me!
     } // end of AdjacencyMatrix()
 
@@ -29,11 +30,13 @@ public class AdjacencyMatrix extends AbstractGraph
         if (matrix == null) {
             // allocate array of size 1
             matrix[0][0] = false;
+            noVertices++;
         }
         else {
             // increase size of array by one (not terribly efficient, but for this
             // lab we assume increase array size by one.
-            boolean newMatrix[][] = new boolean[matrix.length + 1][matrix.length + 1];
+            noVertices++;
+            boolean newMatrix[][] = new boolean[noVertices][noVertices];
 
             // copy all existing values of array to newArray
             for (int i = 0; i < matrix.length; i++) {
@@ -42,9 +45,8 @@ public class AdjacencyMatrix extends AbstractGraph
                 }
 
                 // new entry, add to end of newArray
-                for(int j = 0; i < matrix.length+1; i++) {
-                    newMatrix[matrix.length + 1][matrix.length + 1] = false;
-                }
+                newMatrix[noVertices][noVertices] = false;
+
                 // update reference of array to point to newArray
                 matrix = newMatrix;
             }
@@ -90,6 +92,7 @@ public class AdjacencyMatrix extends AbstractGraph
     public void deleteVertex(String vertLabel) {
         int vertexIndex = vertices.search(vertLabel);
         Array newVertices=null;
+        noVertices--;
         for (int i = 0; i < vertexIndex; i++) {
             newVertices.add(vertices.get(i));
         }
@@ -100,7 +103,7 @@ public class AdjacencyMatrix extends AbstractGraph
 
         vertices = newVertices;
 
-        boolean newMatrix[][] = new boolean[matrix.length - 1][matrix.length - 1];
+        boolean newMatrix[][] = new boolean[noVertices][noVertices];
 
         for(int i = 0; i < matrix.length; i++)
         {
@@ -117,10 +120,39 @@ public class AdjacencyMatrix extends AbstractGraph
 
 
     public String[] kHopNeighbours(int k, String vertLabel) {
-        // Implement me!
+       String neighbours[] = new String[matrix.length];
+        int vertexIndex = vertices.search(vertLabel);
+        neighbours[0]=vertLabel;
+        int index =1;
+        for (int i = 0; i < matrix.length; i++) {
+            if (matrix[vertexIndex][i] == true) {
+                neighbours[index] = vertices.get(i).getName();
+                index++;
+            }
+        }
+        if(k>1) {
+            int loop = 1;
+            while (loop < k) {
+                for (String neighbour : neighbours) {
+                    int currentIndex = vertices.search(neighbour);
+                    for (int i = 0; i < matrix.length; i++) {
+                        if (matrix[currentIndex][i] == true) {
+                            boolean exists=false;
+                            for (int j=0; j< neighbours.length;j++) {
+                                if(neighbours[j].equals(vertices.get(currentIndex).getName())){
+                                    exists=true; }
+                        }
+                            if(exists==false){
+                                neighbours[index]=vertices.get(currentIndex).getName();
+                                index++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-        // please update!
-        return null;
+        return neighbours;
     } // end of kHopNeighbours()
 
     //PUT IN INTERFACE??
@@ -132,7 +164,25 @@ public class AdjacencyMatrix extends AbstractGraph
 
 
     public void printEdges(PrintWriter os) {
-        // Implement me!
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+               if(matrix[i][j]==true){
+                   os.println(vertices.get(i).getName() +vertices.get(j).getName());
+               }
+            }
+
+        }
     } // end of printEdges()
+
+    public SIRState currentState(String vertLabel){
+        int vertexIndex = vertices.search(vertLabel);
+
+        return vertices.get(vertexIndex).getState() ;
+    }
+
+
+    public String[] listVertices() {
+        return vertices.allVertices();
+    }
 
 } // end of class AdjacencyMatrix

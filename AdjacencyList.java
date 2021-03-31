@@ -141,4 +141,25 @@ public class AdjacencyList extends AbstractGraph
         os.print(edgeList.ToString());
     } // end of printEdges()
 
+    public SIRState currentState(String vertLabel)
+    {
+        Vertex vertex = array.search(vertLabel).getmHead().getVertex();
+
+        if (vertex != null) {
+            return vertex.getState();
+        }
+        return null;
+    }
+
+    public String[] listVertices()
+    {
+        String[] vertices = new String[array.getLength()];
+        int index =0;
+        for(int i=0; i< array.getLength();i++){
+            vertices[index] = array.get(i).getmHead().getVertex().getName();
+            index++;
+
+        }
+        return vertices;
+    }
 } // end of class AdjacencyList

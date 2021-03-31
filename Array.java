@@ -13,7 +13,7 @@ public class Array
     public Array() {
         // no memory allocated to array, so we set the reference to null and
         // only allocate memory when we add an element.
-        array = null;
+        array = new Vertex[0];
     } // end of DynamicArray()
 
 
@@ -110,14 +110,14 @@ public class Array
     /**
      * Print the array from front to end (index 0 to end).
      */
-    public void print() {
-        if (array != null) {
-            for (int i = 0; i < array.length; i++) {
-                System.out.print(array[i].getName() + " ");
-            }
+    public String[] allVertices() {
+        String[] vertices = new String[array.length];
+        int index =0;
+        for(Vertex vertex: array){
+            vertices[index] = vertex.getName();
+            index++;
         }
-
-        System.out.println("");
+        return vertices;
     } // end of print()
 
     public int length(){

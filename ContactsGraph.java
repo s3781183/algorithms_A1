@@ -80,4 +80,17 @@ public interface ContactsGraph
 	 */
 	public abstract void printEdges(PrintWriter os);
 
+	/**
+	 * Returns the state of the vertex
+	 *
+	 * @param vertLabel Vertex to find the state of the vertex.
+	 */
+	public SIRState currentState(String vertLabel);
+
+	/**
+	 * Returns the list of current vertices
+	 *
+	 */
+	public String[] listVertices();
+
 } // end of interface ContactsGraph

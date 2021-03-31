@@ -60,4 +60,8 @@ public class IncidenceMatrix extends AbstractGraph
         // Implement me!
     } // end of printEdges()
 
+    public SIRState currentState(String vertLabel) {
+        return null;
+    }
+
 } // end of class IncidenceMatrix
