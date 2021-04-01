@@ -16,6 +16,18 @@ public class Vertex
         this.state = state;
     }
 
+    public void toggleState()
+    {
+        if(state == SIRState.S)
+        {
+            state = SIRState.I;
+        }
+        else if(state == SIRState.I)
+        {
+            state = SIRState.R;
+        }
+    }
+
     public SIRState getState()
     {
         return state;

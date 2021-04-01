@@ -54,14 +54,7 @@ public class AdjacencyList extends AbstractGraph
 
         if (vertex != null)
         {
-            if (vertex.getState() == SIRState.S)
-            {
-                vertex.setState(SIRState.I);
-            }
-            else if (vertex.getState() == SIRState.I)
-            {
-                vertex.setState(SIRState.R);
-            }
+            vertex.toggleState();
         }
     } // end of toggleVertexState()
 
