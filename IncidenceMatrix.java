@@ -145,10 +145,51 @@ public class IncidenceMatrix extends AbstractGraph
 
     public String[] kHopNeighbours(int k, String vertLabel)
     {
-        // Implement me!
+        Vertex startingPoint = null;
 
-        // please update!
-        return null;
+        for (int i = 0; i < array.length; ++i)
+        {
+            if (array[i].getVertex().getName().matches(vertLabel))
+            {
+                startingPoint = array[i].getVertex();
+            }
+        }
+
+        VertexLinkedList vertexes = new VertexLinkedList(startingPoint);
+
+        for (int i = 0; i < k; ++i)
+        {
+            int numVertices = vertexes.getmLength();
+            for (int j = 0; j < numVertices; ++j)
+            {
+                Vertex current = vertexes.get(j).getVertex();
+                int numEdges = edgeList.getmLength();
+                for (int l = 0; l < numEdges; ++l)
+                {
+                    Vertex vert1 = edgeList.get(l).getVert1();
+                    Vertex vert2 = edgeList.get(l).getVert2();
+
+                    if (vert1.getName().matches(current.getName()))
+                    {
+                        vertexes.add(vert2);
+                    }
+
+                    else if (vert2.getName().matches(current.getName()))
+                    {
+                        vertexes.add(vert1);
+                    }
+                }
+            }
+        }
+
+        String[] neighbours = new String[vertexes.getmLength()];
+
+        for (int i = 0; i < vertexes.getmLength(); ++i)
+        {
+            neighbours[i] = vertexes.get(i).getVertex().getName();
+        }
+
+        return neighbours;
     } // end of kHopNeighbours()
 
 
