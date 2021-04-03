@@ -7,6 +7,7 @@ import java.io.PrintWriter;
  */
 public class SIRModel
 {
+    private int reiteration =10;
 
     /**
      * Default constructor, modify as needed.
@@ -33,14 +34,30 @@ public class SIRModel
         for (String vertex : seedVertices) {
             graph.toggleVertexState(vertex);
         }
+        String[] infected = new String[graph.listVertices().length];
+        int index = 0;
+        for(String vertex : graph.listVertices()){
+            if(graph.currentState(vertex)==SIRState.I){
+                infected[index]=vertex;
+                index++;
+            }
+        }
+
         boolean cont = true;
 
         while (cont) {
-
+            String[] newInfected = updateInfected(graph, infectionProb);
+            String[] newRecovered = updateRecovered(graph, recoverProb);
+            graph = updateGraph(newInfected, newRecovered,graph);
+            cont = updateStop(newInfected, newRecovered, infected);
+            infected = newInfected;
             iterations++;
+            }
+            sirModelOutWriter.print(iterations);
+
         }
 
-    }
+
 
     private String[] updateInfected(ContactsGraph graph, float infectProb){
         int index =0;
@@ -94,11 +111,35 @@ public class SIRModel
     }
 
     private boolean updateStop(String[] newInfect, String[] newRecover,String[] currentInfect ){
-        
+        for(int i=0; i< newInfect.length;i++){
+            boolean changeInfect = true;
+            for(int j=0; j< currentInfect.length; j++){
+                if(newInfect[i].equals(currentInfect[j])){
+                    changeInfect = false;
+                }
+                if(j==currentInfect.length-1 && changeInfect==true){
+                    return true;
+                }
+            }
+        }
+
+        for(int i=0; i< newRecover.length;i++){
+            for(int j=0; j< currentInfect.length; j++){
+                if(newInfect[i].equals(currentInfect[j])){
+                    return true;
+                }
+            }
+        }
+
+        if(newInfect.length >0){
+            if(reiteration > 0){
+                reiteration--;
+                return true;
+            }
+        }
 
 
-
-        return true;
+        return false;
     }
 
 
