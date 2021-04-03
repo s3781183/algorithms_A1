@@ -6,7 +6,7 @@ public class EdgeLinkedList
     protected EdgeNode mEdgeHead;
 
     /** Length of list. */
-    protected int mLength;
+    private int mLength;
 
     /**
      * Default constructor.
@@ -187,4 +187,6 @@ public class EdgeLinkedList
 
         return str.toString();
     } // end of toString();
+
+    public int getmLength() { return mLength; }
 }
