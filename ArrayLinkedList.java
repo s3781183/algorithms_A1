@@ -1,3 +1,9 @@
+/**
+ * ArrayLinkedList implementation for an array that contains
+ * all LinkedLists for each Vertex in the graph
+ * @author Jeffrey Chan 2019.
+ * @author Shaunak Karuna 2021.
+ */
 public class ArrayLinkedList
 {
     private static final int NOT_IN_ARRAY = -1;
@@ -6,8 +12,7 @@ public class ArrayLinkedList
 
 
     /**
-     * Constructor.  Ensure you understand what the logic of it is doing,
-     * will help wih understanding what arraySize means.
+     * Constructor to instantiate an Array Linked List Object
      */
     public ArrayLinkedList()
     {
@@ -18,11 +23,10 @@ public class ArrayLinkedList
 
 
     /**
-     * Sets/replaces the value at index.  Indices start at 0.
-     *
-     * @param index Position in array to set/replace value.
-     *
-     * @throws IndexOutOfBoundsException In index are out of bounds.
+     * Sets/replaces the value at the supplied index.
+     * @param index Position in array to whose value needs to be set/replaced
+     * @param newValue The VertexLinkedList that needs to be added to the array
+     * @throws IndexOutOfBoundsException if the index is out of bounds.
      */
     public void set(int index, VertexLinkedList newValue) throws IndexOutOfBoundsException
     {
@@ -36,10 +40,10 @@ public class ArrayLinkedList
 
 
     /**
-     * Gets/retrieves the value at index.  Indices start at 0.
+     * This method retrieves the VertexLinkedList at the supplied index
      *
-     * @param index Position in array to retrieve value from.
-     * @return value of array at specified index.
+     * @param index Position in array to retrieve VertexLinkedList from.
+     * @return VertexLinkedList at specified index.
      *
      * @throws IndexOutOfBoundsException In index are out of bounds.
      */
@@ -54,15 +58,12 @@ public class ArrayLinkedList
 
 
     /**
-     * Add value to end of array.
-     *
-     * @param newValue Value to add to array.
-     *
-     * @throws IndexOutOfBoundsException In index are out of bounds.
+     * Adds a VertexLinkedList to the end of the array.
+     * @param newValue VertexLinkedList to add to the array.
      */
     public void add(VertexLinkedList newValue)
     {
-        // check if we need to allocate memory
+        // If the array is empty, allocate enough memory to store a single element
         if (array == null)
         {
             // allocate array of size 1
@@ -70,30 +71,23 @@ public class ArrayLinkedList
             array[0] = newValue;
         }
         else {
-            // increase size of array by one (not terribly efficient, but for this
-            // lab we assume increase array size by one.
+            /**
+             * Increase the size of the array by one by copying
+             * all previous elements into a newly created array
+             */
             VertexLinkedList newArray[] = new VertexLinkedList[array.length + 1];
-
-            // copy all existing values of array to newArray
             for (int i = 0; i < array.length; i++)
             {
                 newArray[i] = array[i];
             }
-
-            // new entry, add to end of newArray
             newArray[array.length] = newValue;
-
-            // update reference of array to point to newArray
             array = newArray;
         }
     } // end of add()
 
     /**
-     * Searches for the index that contains value.  If value is not present,
-     * method returns -1 (NOT_IN_ARRAY).
-     * If there are multiple values that could be returned, return the one with
-     * the smallest index.
-     *
+     * Searches for the VertexLinkedList based on the name of the Vertex
+     * that the LinkedList's data represents
      * @param nodeName Value to search for.
      * @return Index where value is located, otherwise returns -1 (NOT_IN_ARRAY).
      */
@@ -113,8 +107,16 @@ public class ArrayLinkedList
         return null;
     } // end of search()
 
+    /**
+     * This method gives the length of the array
+     * @return Int The length of the array
+     */
     public int getLength(){return array.length;}
 
+    /**
+     * This method removes a LinkedList from the Array
+     * @param list The VertexLinkedList to be removed
+     */
     public void remove(VertexLinkedList list)
     {
         VertexLinkedList[] newArray = new VertexLinkedList[array.length - 1];
@@ -135,7 +137,7 @@ public class ArrayLinkedList
 
 
     /**
-     * Print the array from front to end (index 0 to end).
+     * This method prints the contents of array from front-to-back
      */
     public String print()
     {
