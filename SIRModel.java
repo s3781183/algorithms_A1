@@ -51,14 +51,19 @@ public class SIRModel
             graph = updateGraph(newInfected, newRecovered,graph);
             cont = updateStop(newInfected, newRecovered, infected);
             infected = newInfected;
+            sirModelOutWriter.print(iterations +": ["+newInfected +"]"+": ["+ newRecovered+"]\n");
             iterations++;
             }
-            sirModelOutWriter.print(iterations);
+
 
         }
 
 
-
+    /**
+     *Loops through the infected vertices and infect particular neighbours based on probability
+     * @param graph Input contracts graph.
+     * @param infectProb Set of seed, infected vertices.
+     */
     private String[] updateInfected(ContactsGraph graph, float infectProb){
         int index =0;
         String[] newInfected = new String[graph.listVertices().length];
@@ -76,7 +81,11 @@ public class SIRModel
         return newInfected;
     }
 
-
+    /**
+     *Loops through the infected vertices recovers particular ones based on probability
+     * @param graph Input contracts graph.
+     * @param recoverProb Probability that a vertex can become recovered.
+     */
     private String[] updateRecovered(ContactsGraph graph, float recoverProb){
         int index =0;
         String[] newRecover = new String[graph.listVertices().length];
@@ -94,6 +103,12 @@ public class SIRModel
 
     }
 
+    /**
+     *Changes the vertices states in the graph, based on the new recovered and infected arrays.
+     * @param newRecover Array of the newly recovered vertices based on new iteration
+     * @param newInfect Array of the newly infected vertices based on new iteration
+     * @param graph Input contracts graph.
+     */
     private ContactsGraph updateGraph(String[] newInfect, String[] newRecover,ContactsGraph graph ){
         for(String infection:newInfect){
             for(String vertex:graph.listVertices()){
@@ -110,6 +125,12 @@ public class SIRModel
         return graph;
     }
 
+    /**
+     *Returns boolean value depending on whether iterations should stop or continue
+     * @param newInfect Array of the newly infected vertices based on previous iteration
+     * @param newRecover Array of the newly recovered vertices based on previous iteration
+     * @param currentInfect Array  infected vertices from current iteration
+     */
     private boolean updateStop(String[] newInfect, String[] newRecover,String[] currentInfect ){
         for(int i=0; i< newInfect.length;i++){
             boolean changeInfect = true;
@@ -137,8 +158,6 @@ public class SIRModel
                 return true;
             }
         }
-
-
         return false;
     }
 

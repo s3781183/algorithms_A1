@@ -13,47 +13,51 @@ public class AdjacencyMatrix extends AbstractGraph
     protected Array vertices;
     protected int noVertices;
     protected boolean matrix[][];
-	/**
-	 * Contructs empty graph.
+
+    /**
+	 * Contructs empty 2D graph with no vertices.
 	 */
     public AdjacencyMatrix() {
         noVertices =0;
         matrix = new boolean[noVertices][noVertices];
 
-    	// Implement me!
-    } // end of AdjacencyMatrix()
+    }
 
 
+    /**
+     * Adds new string vertex to matrix and vertex array.
+     * @param vertLabel String vertex label to add to the end of matrix and array
+     */
     public void addVertex(String vertLabel) {
         vertices.add(new Vertex(vertLabel));
 
         if (matrix == null) {
-            // allocate array of size 1
+
             matrix[0][0] = false;
             noVertices++;
         }
         else {
-            // increase size of array by one (not terribly efficient, but for this
-            // lab we assume increase array size by one.
+
             noVertices++;
             boolean newMatrix[][] = new boolean[noVertices][noVertices];
 
-            // copy all existing values of array to newArray
             for (int i = 0; i < matrix.length; i++) {
                 for (int j = 0; j < matrix.length; j++) {
                     newMatrix[i][j] = matrix[i][j];
                 }
 
-                // new entry, add to end of newArray
                 newMatrix[noVertices][noVertices] = false;
 
-                // update reference of array to point to newArray
                 matrix = newMatrix;
             }
         }
-       }// end of addVertex()
+       }
 
-
+    /**
+     * Adds new edge (changes element value in matrix to 1) between two vertices.
+     * @param srcLabel The first source vertex value
+     * @param tarLabel The second target vertex value
+     */
     public void addEdge(String srcLabel, String tarLabel) {
         int srcIndex = vertices.search(srcLabel);
         int tarIndex = vertices.search(tarLabel);
@@ -63,10 +67,13 @@ public class AdjacencyMatrix extends AbstractGraph
         }
 
 
-        // Implement me!
-    } // end of addEdge()
 
-//PUT IN INTERFACE??
+    }
+
+    /**
+     * Changes the state of the vertex to the new stage
+     * @param vertLabel The vertex that is going to change state
+     */
     public void toggleVertexState(String vertLabel) {
        int vertexIndex = vertices.search(vertLabel);
        if(vertices.get(vertexIndex).getState() == SIRState.S){
@@ -76,9 +83,13 @@ public class AdjacencyMatrix extends AbstractGraph
             vertices.get(vertexIndex).setState(SIRState.R);
         }
 
-    } // end of toggleVertexState()
+    }
 
-
+    /**
+     * Deletes edge (changes element value in matrix to 0) between two vertices.
+     * @param srcLabel The first source vertex value
+     * @param tarLabel The second target vertex value
+     */
     public void deleteEdge(String srcLabel, String tarLabel) {
         int srcIndex = vertices.search(srcLabel);
         int tarIndex = vertices.search(tarLabel);
@@ -86,9 +97,12 @@ public class AdjacencyMatrix extends AbstractGraph
             matrix[srcIndex][tarIndex] = false;
             matrix[tarIndex][srcIndex] = false;
         }
-    } // end of deleteEdge()
+    }
 
-
+    /**
+     * Deletes vertex from matrix and vertex array.
+     * @param vertLabel String vertex label to be deleted from matrix and vertex array
+     */
     public void deleteVertex(String vertLabel) {
         int vertexIndex = vertices.search(vertLabel);
         Array newVertices=null;
@@ -116,9 +130,13 @@ public class AdjacencyMatrix extends AbstractGraph
             }
         }
 
-    } // end of deleteVertex()
+    }
 
-
+    /**
+     * Finds the vertices that are neighbours with the source vertex (k-hop away)
+     * @param k stands for how many k-hop away
+     * @param vertLabel the target vertex
+     */
     public String[] kHopNeighbours(int k, String vertLabel) {
        String neighbours[] = new String[matrix.length];
         int vertexIndex = vertices.search(vertLabel);
@@ -155,14 +173,18 @@ public class AdjacencyMatrix extends AbstractGraph
         return neighbours;
     } // end of kHopNeighbours()
 
-    //PUT IN INTERFACE??
+    /**
+     * Prints the vertices currently in vertex array
+     */
     public void printVertices(PrintWriter os) {
        for(int i=0; i<vertices.length(); i++){
            os.print("("+ vertices.get(i).getName() +"," + vertices.get(i).getState() +") ");
        }
     } // end of printVertices()
 
-
+    /**
+     * Prints the edges (value 1) currently in matrix
+     */
     public void printEdges(PrintWriter os) {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
@@ -173,14 +195,19 @@ public class AdjacencyMatrix extends AbstractGraph
 
         }
     } // end of printEdges()
-
+    /**
+     * Prints the current state of a particular vertex
+     * @param vertLabel the string vertex that needs its state
+     */
     public SIRState currentState(String vertLabel){
         int vertexIndex = vertices.search(vertLabel);
 
         return vertices.get(vertexIndex).getState() ;
     }
 
-
+    /**
+     * Returns the string array of all the current vertices
+     */
     public String[] listVertices() {
         return vertices.allVertices();
     }
