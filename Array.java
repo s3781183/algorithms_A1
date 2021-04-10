@@ -13,7 +13,7 @@ public class Array
     public Array() {
         // no memory allocated to array, so we set the reference to null and
         // only allocate memory when we add an element.
-        array = new Vertex[0];
+        array = null;
     } // end of DynamicArray()
 
 
@@ -97,6 +97,7 @@ public class Array
     public int search(String value) {
         if (array != null) {
             for (int i = 0; i < array.length; ++i) {
+                //??????
                 if (array[i].equals(value)) {
                     return i;
                 }
@@ -121,7 +122,10 @@ public class Array
     } // end of print()
 
     public int length(){
-        return array.length;
+        if (array==null){
+            return 0;
+        }
+            return array.length;
     }
 
 
