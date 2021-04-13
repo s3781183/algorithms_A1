@@ -31,9 +31,11 @@ public class SIRModel
 
         int iterations = 1;
 
+        //changing to negative
         for (String vertex : seedVertices) {
             graph.toggleVertexState(vertex);
         }
+        //can include null
         String[] infected = new String[graph.listVertices().length];
         int index = 0;
         for(String vertex : graph.listVertices()){
@@ -48,10 +50,26 @@ public class SIRModel
         while (cont) {
             String[] newInfected = updateInfected(graph, infectionProb);
             String[] newRecovered = updateRecovered(graph, recoverProb);
+            String infect = "";
+            String recover = "";
+            for(int i=0; i<newInfected.length; i++){
+                if(newInfected[i]!=null){
+                     infect = newInfected[i] + " "+ infect;}
+            }
+//            for(String vertex : graph.listVertices()){
+//                sirModelOutWriter.print(graph.currentState(vertex) +"\n");
+//                sirModelOutWriter.flush();
+//                }
+        for(int i=0; i<newRecovered.length; i++){
+            if(newRecovered[i]!=null){
+                recover = newRecovered[i]  + " "+ recover;}
+        }
             graph = updateGraph(newInfected, newRecovered,graph);
             cont = updateStop(newInfected, newRecovered, infected);
             infected = newInfected;
-            sirModelOutWriter.print(iterations +": ["+newInfected +"]"+": ["+ newRecovered+"]\n");
+
+        sirModelOutWriter.print(iterations +": ["+infect +"]"+": ["+ recover+"]\n");
+        sirModelOutWriter.flush();
             iterations++;
             }
 
@@ -67,11 +85,13 @@ public class SIRModel
     private String[] updateInfected(ContactsGraph graph, float infectProb){
         int index =0;
         String[] newInfected = new String[graph.listVertices().length];
+
+//        String[] newInfected = {Integer.toString(graph.listVertices().length)};
         for(String vertex:graph.listVertices()){
-            if(graph.currentState(vertex)==SIRState.I)
-                for(String neighbour:graph.kHopNeighbours(1, vertex)){
+            if(graph.currentState(vertex).equals(SIRState.I))
+                for(String neighbour:graph.kHopNeighbours(0, vertex)){
                  double rand = Math.random();
-                 if(graph.currentState(neighbour)==SIRState.S && rand<=infectProb){
+                 if(graph.currentState(neighbour).equals(SIRState.S) && rand<=infectProb){
                      newInfected[index]=neighbour;
                      index++;
                  }
@@ -90,7 +110,7 @@ public class SIRModel
         int index =0;
         String[] newRecover = new String[graph.listVertices().length];
         for(String vertex:graph.listVertices()){
-            if(graph.currentState(vertex)==SIRState.I){
+            if(graph.currentState(vertex).equals(SIRState.I)){
                 double rand = Math.random();
                 if(rand<=recoverProb){
                     newRecover[index]=vertex;
@@ -110,18 +130,25 @@ public class SIRModel
      * @param graph Input contracts graph.
      */
     private ContactsGraph updateGraph(String[] newInfect, String[] newRecover,ContactsGraph graph ){
+        if(newInfect.length>1){
         for(String infection:newInfect){
+            if(infection!=null){
             for(String vertex:graph.listVertices()){
                 if(infection.equals(vertex)){
                 graph.toggleVertexState(vertex);
-            }}}
+            }
+            }
+        }}
+        }
+        if(newRecover.length>1){
         for(String recover:newRecover){
+            if(recover!=null){
              for(String vertex:graph.listVertices()){
                   if(recover.equals(vertex)){
                    graph.toggleVertexState(vertex);
                         }
 
-            }}
+            }}}}
         return graph;
     }
 
@@ -135,6 +162,7 @@ public class SIRModel
         for(int i=0; i< newInfect.length;i++){
             boolean changeInfect = true;
             for(int j=0; j< currentInfect.length; j++){
+                if(newInfect[i]!=null){
                 if(newInfect[i].equals(currentInfect[j])){
                     changeInfect = false;
                 }
@@ -142,14 +170,15 @@ public class SIRModel
                     return true;
                 }
             }
-        }
+        }}
 
         for(int i=0; i< newRecover.length;i++){
             for(int j=0; j< currentInfect.length; j++){
-                if(newInfect[i].equals(currentInfect[j])){
+                if(newRecover[i]!=null){
+                if(newRecover[i].equals(currentInfect[j])){
                     return true;
                 }
-            }
+            }}
         }
 
         if(newInfect.length >0){

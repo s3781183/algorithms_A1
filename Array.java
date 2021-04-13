@@ -24,13 +24,13 @@ public class Array
      *
      * @throws IndexOutOfBoundsException In index are out of bounds.
      */
-    public void set(int index, Vertex newValue) throws IndexOutOfBoundsException {
-        if (index >= array.length || index < 0) {
-            throw new IndexOutOfBoundsException("Supplied index is invalid.");
-        }
-
-        array[index] = newValue;
-    } // end of set()
+//    public void set(int index, Vertex newValue) throws IndexOutOfBoundsException {
+//        if (index >= array.length || index < 0) {
+//            throw new IndexOutOfBoundsException("Supplied index is invalid.");
+//        }
+//
+//        array[index] = newValue;
+//    } // end of set()
 
 
     /**
@@ -55,7 +55,6 @@ public class Array
      *
      * @param newValue Value to add to array.
      *
-     * @throws IndexOutOfBoundsException In index are out of bounds.
      */
     public void add(Vertex newValue) {
         // check if we need to allocate memory
@@ -98,7 +97,7 @@ public class Array
         if (array != null) {
             for (int i = 0; i < array.length; ++i) {
                 //??????
-                if (array[i].equals(value)) {
+                if (array[i].getName().equals(value)) {
                     return i;
                 }
             }
@@ -114,10 +113,14 @@ public class Array
     public String[] allVertices() {
         String[] vertices = new String[array.length];
         int index =0;
-        for(Vertex vertex: array){
-            vertices[index] = vertex.getName();
-            index++;
-        }
+//        for(Vertex vertex: array){
+//            vertices[index] = vertex.getName();
+//            index++;
+//        }
+        for (int i = 0; i < array.length; ++i) {
+            //??????
+           vertices [i] = array[i].getName();
+            }
         return vertices;
     } // end of print()
 
