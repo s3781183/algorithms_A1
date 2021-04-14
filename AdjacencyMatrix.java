@@ -169,6 +169,7 @@ public class AdjacencyMatrix extends AbstractGraph
                                     }
                                 }
                                 if (exists == false) {
+                                    neighboursVect.add(vertices.get(i));
                                 }
                             }
                         }
