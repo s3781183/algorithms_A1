@@ -182,7 +182,7 @@ public class AdjacencyMatrix extends AbstractGraph
             }
             return neighbours;
         }
-        String[] neighbours = {"0"};
+        String[] neighbours = {""};
         return neighbours;
     } // end of kHopNeighbours()
 
