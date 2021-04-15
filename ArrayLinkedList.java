@@ -6,45 +6,19 @@
  */
 public class ArrayLinkedList
 {
-    private static final int NOT_IN_ARRAY = -1;
     /** Reference to the memory of array. */
-    protected VertexLinkedList array[];
+    private VertexLinkedList[] array;
 
-
-    /**
-     * Constructor to instantiate an Array Linked List Object
-     */
+    /** Constructor to instantiate an Array Linked List Object*/
     public ArrayLinkedList()
     {
-        // no memory allocated to array, so we set the reference to null and
-        // only allocate memory when we add an element.
         array = null;
-    } // end of DynamicArray()
-
-
-    /**
-     * Sets/replaces the value at the supplied index.
-     * @param index Position in array to whose value needs to be set/replaced
-     * @param newValue The VertexLinkedList that needs to be added to the array
-     * @throws IndexOutOfBoundsException if the index is out of bounds.
-     */
-    public void set(int index, VertexLinkedList newValue) throws IndexOutOfBoundsException
-    {
-        if (index >= array.length || index < 0)
-        {
-            throw new IndexOutOfBoundsException("Supplied index is invalid.");
-        }
-
-        array[index] = newValue;
-    } // end of set()
-
+    }
 
     /**
      * This method retrieves the VertexLinkedList at the supplied index
-     *
      * @param index Position in array to retrieve VertexLinkedList from.
      * @return VertexLinkedList at specified index.
-     *
      * @throws IndexOutOfBoundsException In index are out of bounds.
      */
     public VertexLinkedList get(int index) throws IndexOutOfBoundsException
@@ -54,7 +28,7 @@ public class ArrayLinkedList
             throw new IndexOutOfBoundsException("Supplied index is invalid.");
         }
         return array[index];
-    } // end of get()
+    }
 
 
     /**
@@ -68,14 +42,15 @@ public class ArrayLinkedList
         {
             // allocate array of size 1
             array = new VertexLinkedList[1];
-            array[0] = newValue;
+            array[getLength() - 1] = newValue;
         }
-        else {
-            /**
+        else
+        {
+            /*
              * Increase the size of the array by one by copying
              * all previous elements into a newly created array
              */
-            VertexLinkedList newArray[] = new VertexLinkedList[array.length + 1];
+            VertexLinkedList[] newArray = new VertexLinkedList[array.length + 1];
             for (int i = 0; i < array.length; i++)
             {
                 newArray[i] = array[i];
@@ -83,7 +58,7 @@ public class ArrayLinkedList
             newArray[array.length] = newValue;
             array = newArray;
         }
-    } // end of add()
+    }
 
     /**
      * Searches for the VertexLinkedList based on the name of the Vertex
@@ -95,17 +70,16 @@ public class ArrayLinkedList
     {
         if (array != null)
         {
-            for (int i = 0; i < array.length; ++i)
+            for (VertexLinkedList vertexLinkedList : array)
             {
-                if (array[i].getmHead().getVertex().getName().matches(nodeName))
+                if (vertexLinkedList.getmHead().getVertex().getName().matches(nodeName))
                 {
-                    return array[i];
+                    return vertexLinkedList;
                 }
             }
         }
-
         return null;
-    } // end of search()
+    }
 
     /**
      * This method gives the length of the array
@@ -120,36 +94,39 @@ public class ArrayLinkedList
     public void remove(VertexLinkedList list)
     {
         VertexLinkedList[] newArray = new VertexLinkedList[array.length - 1];
+        int index = -1;
+
         for (int i = 0; i < array.length; ++i)
         {
-            int index = array.length;
-            if (array[i].getmHead() != list.getmHead() && index > i)
+            if (!array[i].equals(list))
             {
-                newArray[i] = array[i];
+                if(index == -1)
+                {
+                    newArray[i] = array[i];
+                }
+                else if (index != -1)
+                {
+                    newArray[i - 1] = array[i];
+                }
             }
-
-            else if(array[i].getmHead() != list.getmHead() && index <= i)
+            else
             {
-                newArray[i - 1] = array[i];
+                index = i;
             }
         }
+        array = newArray;
     }
 
 
-    /**
-     * This method prints the contents of array from front-to-back
-     */
+    /** This method prints the contents of array from front-to-back */
     public String print()
     {
         StringBuffer sB = new StringBuffer();
-        if (array != null)
-        {
-            for (int i = 0; i < array.length; i++)
-            {
-                sB.append(array[i].ToString() + " ");
-            }
-        }
 
+        for (VertexLinkedList list : array)
+        {
+            sB.append(list.getmHead().getVertex().getName() + "");
+        }
         return sB.toString();
-    } // end of print()
+    }
 }

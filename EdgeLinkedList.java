@@ -1,11 +1,12 @@
+/**
+ * This class represents a Linked List that stores edges
+ */
 public class EdgeLinkedList
 {
-    private static final int NOT_IN_ARRAY = -1;
+    /** The head of the list*/
+    private EdgeNode mEdgeHead;
 
-    /** Reference to edge head node (if applicable). */
-    protected EdgeNode mEdgeHead;
-
-    /** Length of list. */
+    /** The length of list. */
     private int mLength;
 
     /**
@@ -15,11 +16,10 @@ public class EdgeLinkedList
     {
         mEdgeHead = null;
         mLength = 0;
-    } // end of SimpleLinkedList()
+    }
 
     /**
-     * Add a new edge to the start of the list.
-     *
+     * This method adds a new edge to the end of the list.
      * @param newEdge Value to add to list.
      */
     public void add(Edge newEdge)
@@ -27,103 +27,52 @@ public class EdgeLinkedList
         EdgeNode newEdgeNode = new EdgeNode(newEdge);
 
         // If head is empty, then list is empty and head reference need to be initialised.
-        if (mEdgeHead == null)
+        if (mEdgeHead != null)
         {
-            mEdgeHead = newEdgeNode;
-        }
-        // otherwise, add node to the head of list.
-        else {
             newEdgeNode.setNext(mEdgeHead);
-            mEdgeHead = newEdgeNode;
         }
-
+        mEdgeHead = newEdgeNode;
         ++mLength;
-    } // end of add()
+    }
 
     /**
-     * Insert value (and corresponding node) at position 'index'.  Indices start at 0.
-     *
-     * @param index Position in list to add new value to.
-     * @param newEdge Value to add to list.
-     *
-     * @throws IndexOutOfBoundsException Index are out of bounds.
-     */
-    public void insert(int index, Edge newEdge) throws IndexOutOfBoundsException
-    {
-        if (index >= mLength || index < 0)
-        {
-            throw new IndexOutOfBoundsException("Supplied index is invalid.");
-        }
-
-        EdgeNode newEdgeNode = new EdgeNode(newEdge);
-
-        if (mEdgeHead == null)
-        {
-            mEdgeHead = newEdgeNode;
-        }
-        // list is not empty
-        else {
-            // if index = 0, we should replace mHead with newNode
-            if (index == 0)
-            {
-                newEdgeNode.setNext(mEdgeHead);
-                mEdgeHead = newEdgeNode;
-            }
-            else {
-                EdgeNode currEdgeNode = mEdgeHead;
-                for (int i = 0; i < index-1; ++i)
-                {
-                    currEdgeNode = currEdgeNode.getNext();
-                }
-
-                newEdgeNode.setNext(currEdgeNode.getNext());
-                currEdgeNode.setNext(newEdgeNode);
-            }
-        }
-
-        ++mLength;
-    } // end of insert()
-
-
-    /**
-     * Returns the value stored in node at position 'index' of list.
-     *
-     * @param index Position in list to get new value for.
-     * @return Value of element at specified position in list.
-     *
+     * This metod returns the value stored
+     * in node at position 'index' of list.
+     * @param index position in list to get value for.
+     * @return edge at specified position in list.
      * @throws IndexOutOfBoundsException Index is out of bounds.
      */
     public Edge get(int index) throws IndexOutOfBoundsException
     {
-        if (index >= mLength || index < 0)
+        if (index > mLength || index < 0)
         {
             throw new IndexOutOfBoundsException("Supplied index is invalid.");
         }
 
         EdgeNode currEdgeNode = mEdgeHead;
-        for (int i = 0; i < index; ++i)
+        if (mLength != 0)
         {
-            currEdgeNode = currEdgeNode.getNext();
+            for (int i = 0; i < index; ++i)
+            {
+                currEdgeNode = currEdgeNode.getNext();
+            }
+            return currEdgeNode.getEdge();
         }
-
-        return currEdgeNode.getEdge();
-    } // end of get()
+        return null;
+    }
 
     /**
-     * Searches for the index that contains value.  If value is not present,
-     * method returns -1 (NOT_IN_ARRAY).
-     * If there are multiple values that could be returned, return the one with
-     * the smallest index.
-     *
-     * @param name Name of vertex to search for.
-     * @return Index where value is located, otherwise returns -1 (NOT_IN_ARRAY).
+     * This method searches for the index that contains value.
+     * If value is not present, method returns null.
+     * @param name Name of edge to search for.
+     * @return Index where value is located.
      */
     public Edge search(String name)
     {
         EdgeNode currEdgeNode = mEdgeHead;
         for (int i = 0; i < mLength; ++i)
         {
-            if (currEdgeNode.getEdge().toString().contentEquals(name))
+            if (currEdgeNode.getEdge().toString().matches(name))
             {
                 return currEdgeNode.getEdge();
             }
@@ -131,12 +80,12 @@ public class EdgeLinkedList
         }
 
         return null;
-    } // end of search()
+    }
 
     /**
-     * Delete given value from list (delete first instance found).
-     *
-     * @param name Name of vertex to remove.
+     * This method deletes the first found
+     * instance of a given value from the list
+     * @param name Name of edge to remove.
      * @return True if deletion was successful, otherwise false.
      */
     public boolean remove(String name)
@@ -144,36 +93,37 @@ public class EdgeLinkedList
         EdgeNode prevEdgeNode = null;
         EdgeNode currEdgeNode = mEdgeHead;
 
-        for (int i = 0; i < mLength; ++i)
+        while(currEdgeNode != null)
         {
             if (currEdgeNode.getEdge().toString().contentEquals(name))
             {
                 if(prevEdgeNode == null)
                 {
-                    mEdgeHead = currEdgeNode.getNext();
-                    --mLength;
-                    return true;
+                    mEdgeHead = null;
                 }
-
-                else {
+                else
+                {
                     prevEdgeNode.setNext(currEdgeNode.getNext());
-                    --mLength;
-                    return true;
                 }
+                --mLength;
+                return true;
             }
-            else {
+            else
+            {
                 prevEdgeNode = currEdgeNode;
                 currEdgeNode = currEdgeNode.getNext();
             }
         }
-
         return false;
-    } // end of remove()
+    }
 
     /**
+     * This method provides a String that is
+     * useful for operations such as printing.
      * @return String representation of the list.
      */
-    public String ToString()
+    @Override
+    public String toString()
     {
         EdgeNode currEdgeNode = mEdgeHead;
 
@@ -184,9 +134,9 @@ public class EdgeLinkedList
             str.append(currEdgeNode.getEdge().toString() + " ");
             currEdgeNode = currEdgeNode.getNext();
         }
-
         return str.toString();
-    } // end of toString();
+    }
 
+    /** This method is a getter for the length of the list */
     public int getmLength() { return mLength; }
 }

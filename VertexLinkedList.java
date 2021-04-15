@@ -1,18 +1,21 @@
-
+/**
+ * This class reprsents a LinkedList object that stores Vertexes
+ * to be used to assist with implementations of the Adjacency List
+ */
 public class VertexLinkedList
 {
-    private static final int NOT_IN_ARRAY = -1;
-    /** Reference to head node */
+    //The Node that is at the head of this linked list
     private VertexNode mHead;
 
-    /** Reference to tail node */
+    //The Node that is at the tail of this linked list
     private VertexNode mTail;
 
-    /** Length of list. */
+    //The length of the linked list
     private int mLength;
 
     /**
-     * Default constructor.
+     * Default constructor for instantiating a VertexLinkedList object
+     * @param head A Vertex that will be used as the head of the list
      */
     public VertexLinkedList(Vertex head)
     {
@@ -20,13 +23,12 @@ public class VertexLinkedList
         mHead = headNode;
         mTail = headNode;
         mLength = 1;
-    } // end of SimpleLinkedList()
+    }
 
 
     /**
-     * Add a new vertex to the start of the list.
-     *
-     * @param newValue Value to add to list.
+     * This method adds a new vertex to the end of the list
+     * @param newValue Vertex to add to list.
      */
     public void add(Vertex newValue)
     {
@@ -34,75 +36,58 @@ public class VertexLinkedList
         mTail.setNext(newNode);
         mTail = newNode;
         ++mLength;
-    } // end of add()
+    }
 
     /**
-     * Returns the value stored in node at position 'index' of list.
-     *
-     * @param index Position in list to get new value for.
-     * @return Value of element at specified position in list.
-     *
-     * @throws IndexOutOfBoundsException Index is out of bounds.
+     * This method returns the value stored in node at position 'index' of list
+     * @param index Position in list to get value of
+     * @return Value of element at the specified position in list.
+     * @throws IndexOutOfBoundsException if index is out of bounds.
      */
     public VertexNode get(int index) throws IndexOutOfBoundsException
     {
-        if (index >= mLength || index < 1)
+        if (index > mLength || index < 0)
         {
             throw new IndexOutOfBoundsException("Supplied index is invalid.");
         }
 
-        VertexNode currNode = mHead;
-        for (int i = 1; i < index; ++i)
+        VertexNode currVertexNode = mHead;
+        if (mLength != 0)
         {
-            currNode = currNode.getNext();
-        }
-
-        return currNode;
-    } // end of get()
-
-    /**
-     * Searches for the index that contains value.  If value is not present,
-     * method returns -1 (NOT_IN_ARRAY).
-     * If there are multiple values that could be returned, return the one with
-     * the smallest index.
-     *
-     * @param name Name of vertex to search for.
-     * @return Index where value is located, otherwise returns -1 (NOT_IN_ARRAY).
-     */
-    public Vertex search(String name)
-    {
-        VertexNode currNode = mHead;
-        if (mLength > 1)
-        {
-            for (int i = 1; i < mLength; ++i)
+            for (int i = 0; i < index; ++i)
             {
-                if (currNode.getVertex().getName().contentEquals(name))
-                {
-                    return currNode.getVertex();
-                }
-                currNode = currNode.getNext();
+                currVertexNode = currVertexNode.getNext();
             }
+            return currVertexNode;
         }
         return null;
-    } // end of search()
+    }
 
     /**
-     * Delete given value from list (delete first instance found).
+     * This method deletes first instance
+     * found of a given value from the list
      *
      * @param name Name of vertex to remove.
      * @return True if deletion was successful, otherwise false.
      */
     public boolean remove(String name)
     {
-        VertexNode prevNode = mHead;
-        VertexNode currNode = get(1);
+        VertexNode prevNode = null;
+        VertexNode currNode = mHead;
 
-        for (int i = 1; i < mLength; ++i)
+        while (currNode != null)
         {
             if (currNode.getVertex().getName().contentEquals(name))
             {
-                prevNode.setNext(currNode.getNext());
-                --mLength;
+                if (mLength > 0)
+                {
+                    prevNode.setNext(currNode.getNext());
+                    --mLength;
+                }
+                else
+                {
+                    mHead = null;
+                }
                 return true;
             }
             else
@@ -111,18 +96,20 @@ public class VertexLinkedList
                 currNode = currNode.getNext();
             }
         }
-
         return false;
-    } // end of remove()
+    }
 
     /**
+     * This method gives a string representation of the list
+     * to help for printing purposes
      * @return String representation of the list.
      */
-    public String ToString()
+    @Override
+    public String toString()
     {
         VertexNode currNode = mHead;
 
-        StringBuffer str = new StringBuffer();
+        StringBuilder str = new StringBuilder();
 
         while (currNode != null)
         {
@@ -131,11 +118,14 @@ public class VertexLinkedList
         }
 
         return str.toString();
-    } // end of toString();
+    }
 
+    //This method returns the Head Node
     public VertexNode getmHead() { return mHead; }
 
+    //This method returns the Tail Node
     public VertexNode getmTail() { return mTail; }
 
+    //This method reutrns the length of the list
     public int getmLength() { return mLength; }
 }
