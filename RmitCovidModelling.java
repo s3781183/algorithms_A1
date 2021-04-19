@@ -62,7 +62,7 @@ public class RmitCovidModelling
 	 *
 	 * @param inReader Input reader where the operation commands are coming from.
 	 * @param graph The graph which the operations are executed on.
-	 * @param sir SIR model object that will run the SIR simulation.
+	 * @param sirModel SIR model object that will run the SIR simulation.
 	 * @param outWriter Where to outputs should be written to.
 	 *
 	 * @throws IOException If there is an exception to do with I/O.
@@ -86,14 +86,17 @@ public class RmitCovidModelling
 			}
 
 			String command = tokens[0];
-
+			long startTime = 0;
+			long endTime=0;
 			try {
 				// determine which operation to execute
 				switch (command.toUpperCase()) {
 					// add vertex
 					case "AV":
 						if (tokens.length == 2) {
+							startTime = System.nanoTime();
 							graph.addVertex(tokens[1]);
+							endTime = System.nanoTime();
 						}
 						else {
 							printErrorMsg("incorrect number of tokens.");
@@ -102,7 +105,9 @@ public class RmitCovidModelling
 	                // add edge
 					case "AE":
 						if (tokens.length == 3) {
+							startTime = System.nanoTime();
 							graph.addEdge(tokens[1], tokens[2]);
+							endTime = System.nanoTime();
 						}
 						else {
 							printErrorMsg("incorrect number of tokens.");
@@ -120,7 +125,9 @@ public class RmitCovidModelling
 					// remove/delete vertex
 					case "DV":
 						if (tokens.length == 2) {
+							startTime = System.nanoTime();
 							graph.deleteVertex(tokens[1]);
+							endTime = System.nanoTime();
 						}
 						else {
 							printErrorMsg("incorrect number of tokens.");
@@ -129,7 +136,9 @@ public class RmitCovidModelling
 					// remove/delete edge
 					case "DE":
 						if (tokens.length == 3) {
+							startTime = System.nanoTime();
 							graph.deleteEdge(tokens[1], tokens[2]);
+						    endTime = System.nanoTime();
 						}
 						else {
 							printErrorMsg("incorrect number of tokens.");
@@ -139,7 +148,9 @@ public class RmitCovidModelling
 					case "KN":
 						outWriter.println("# " + line);
 						if (tokens.length == 3) {
+							startTime = System.nanoTime();
 							int k = Integer.parseInt(tokens[1]);
+							endTime = System.nanoTime();
 							if (k < 0) {
 								printErrorMsg("k should be 0 or greater");
 							}
@@ -171,8 +182,9 @@ public class RmitCovidModelling
 							String[] seedVertices = tokens[1].split(";");
 							float infectionProb = Float.parseFloat(tokens[2]);
 							float recoverProb = Float.parseFloat(tokens[3]);
-
+							startTime = System.nanoTime();
 							sirModel.runSimulation(graph, seedVertices, infectionProb, recoverProb, outWriter);
+							endTime = System.nanoTime();
 						}
 						else {
 							printErrorMsg("incorrect number of tokens.");
@@ -186,6 +198,7 @@ public class RmitCovidModelling
 					default:
 						printErrorMsg("Unknown command.");
 				} // end of switch()
+				outWriter.println(((double)(endTime - startTime)) / Math.pow(10, 9));
 			}
 			catch (IllegalArgumentException e) {
 				printErrorMsg(e.getMessage());
