@@ -115,16 +115,13 @@ public class AdjacencyList extends AbstractGraph
         if (vertex != null)
         {
             //Removes all edges that involve the Vertex to be deleted
-            for (int i = 0; i < edgeList.getmLength(); ++i)
+            for(int i = 0; i < edgeList.getmLength(); ++i)
             {
-                if (edgeList.get(i) != null)
+                if (edgeList.get(i).getVert1().getName().matches(vertLabel)
+                || edgeList.get(i).getVert2().getName().matches(vertLabel))
                 {
-                    Edge edge = edgeList.get(i);
-                    if (edge.getVert1().getName().matches(vertLabel) ||
-                            edge.getVert2().getName().matches(vertLabel))
-                    {
-                        edgeList.remove(edge.toString());
-                    }
+                    edgeList.remove(edgeList.get(i).toString());
+                    --i;
                 }
             }
 

@@ -1,13 +1,13 @@
-import java.util.TreeMap;
+import java.util.HashMap;
 
 /**
- * This class represents an Array of TreeMaps data structure that will be used
+ * This class represents an Array of TreeMaps that will be used
  * to hold the values for the Incidence Matrix.
  */
 public class ArrayMap
 {
     //The Tree Map that will hold the values for the relevant Edge
-    private TreeMap<Edge, Integer> collection = new TreeMap<Edge, Integer>();
+    private HashMap<Edge, Integer> collection = new HashMap<>();
     //The Vertex that the values held in the map are for
     private Vertex vertex;
 
@@ -17,13 +17,13 @@ public class ArrayMap
      */
     public void addEdge(Edge edge)
     {
-        /**
+        /*
          * If the Vertex the map is representative of is one of the vertexes
          * that is part of the set of vertices of the supplied edge, then
          * represent it in the Incidence Matrix
          */
-        if(edge.getVert1().getName() != vertex.getName() ||
-                edge.getVert2().getName() != vertex.getName())
+        if(!edge.getVert1().getName().matches(vertex.getName()) ||
+                edge.getVert2().getName().matches(vertex.getName()))
         {
             collection.put(edge, 0);
         }

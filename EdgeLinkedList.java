@@ -36,7 +36,7 @@ public class EdgeLinkedList
     }
 
     /**
-     * This metod returns the value stored
+     * This method returns the value stored
      * in node at position 'index' of list.
      * @param index position in list to get value for.
      * @return edge at specified position in list.
@@ -86,35 +86,37 @@ public class EdgeLinkedList
      * This method deletes the first found
      * instance of a given value from the list
      * @param name Name of edge to remove.
-     * @return True if deletion was successful, otherwise false.
      */
-    public boolean remove(String name)
+    public void remove(String name)
     {
-        EdgeNode prevEdgeNode = null;
-        EdgeNode currEdgeNode = mEdgeHead;
 
-        while(currEdgeNode != null)
+        EdgeNode prevNode = null;
+        EdgeNode currNode = mEdgeHead;
+
+        for (int i = 0; i < mLength; ++i)
         {
-            if (currEdgeNode.getEdge().toString().contentEquals(name))
+            if (currNode.getEdge().toString().matches(name))
             {
-                if(prevEdgeNode == null)
+                //If node is Head Node
+                if(prevNode == null)
                 {
-                    mEdgeHead = null;
+                    mEdgeHead = currNode.getNext();
+                    --mLength;
                 }
+
                 else
                 {
-                    prevEdgeNode.setNext(currEdgeNode.getNext());
+                    prevNode.setNext(currNode.getNext());
+                    --mLength;
                 }
-                --mLength;
-                return true;
             }
             else
             {
-                prevEdgeNode = currEdgeNode;
-                currEdgeNode = currEdgeNode.getNext();
+                prevNode = currNode;
+                currNode = currNode.getNext();
             }
         }
-        return false;
+
     }
 
     /**
@@ -127,7 +129,7 @@ public class EdgeLinkedList
     {
         EdgeNode currEdgeNode = mEdgeHead;
 
-        StringBuffer str = new StringBuffer();
+        StringBuilder str = new StringBuilder();
 
         while (currEdgeNode != null)
         {
