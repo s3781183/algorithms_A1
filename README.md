@@ -6,6 +6,8 @@ Task included:
  <li> Incidence Matrix Implementation </li>
  <li> Implemtation of SIR Model </li>
  
+ <p>
+ 
  The (networked) SIR Model assumes each individual has three states -Susceptible (S) to the disease, Infected (I) by the disease and
- Recovered (R)to the disease.  
+ Recovered (R)to the disease.  </p>
  
